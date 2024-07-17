@@ -3,5 +3,5 @@ package domain
 /**
  * Представляет собой входную ленту целых чисел
  */
-interface InputTape {
+class InputTape(tape: List<Int>) {
 }

@@ -22,7 +22,7 @@ fun InputTapeUI(
     onTapeChanged: (tape: List<String>) -> Unit,
 ) {
     var inputText by remember { mutableStateOf("") }
-    val tape = remember { mutableStateListOf<String>() }
+    val tape = remember { mutableStateListOf("0") }
 
     val addValueAction: (input: String) -> Unit = { input ->
         if (input.toIntOrNull() != null) {
@@ -34,9 +34,7 @@ fun InputTapeUI(
     }
 
     Column {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 value = inputText,
                 onValueChange = { inputText = it },
@@ -52,6 +50,7 @@ fun InputTapeUI(
                     }
                 )
             )
+
             Button(
                 onClick = {
                     addValueAction(inputText)

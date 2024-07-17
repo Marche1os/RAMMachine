@@ -1,7 +1,5 @@
 package domain.commands
 
-import domain.OutputTape
-
 /**
  * Классы конкретной команды. Является корневым для всех команд
  */
