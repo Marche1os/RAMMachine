@@ -16,6 +16,7 @@ fun MenuUI(
     onStepClick: () -> Unit = {},
     onRunClick: () -> Unit = {},
     onStopClick: () -> Unit = {},
+    isEnableMenu: Boolean,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -32,6 +33,7 @@ fun MenuUI(
 
         Button(
             onClick = onStepClick,
+            enabled = isEnableMenu,
         ) {
             Text(text = "Step")
         }
@@ -40,6 +42,7 @@ fun MenuUI(
 
         Button(
             onClick = onRunClick,
+            enabled = isEnableMenu,
         ) {
             Text(text = "Run")
         }
@@ -48,6 +51,7 @@ fun MenuUI(
 
         Button(
             onClick = onStopClick,
+            enabled = isEnableMenu,
         ) {
             Text(text = "Stop")
         }

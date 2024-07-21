@@ -1,5 +1,6 @@
 package domain.interpreter
 
-class InterpreterState {
-
+sealed interface InterpreterState {
+    data object Init : InterpreterState
+    data object Error : InterpreterState
 }

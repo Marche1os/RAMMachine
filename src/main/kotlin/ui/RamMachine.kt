@@ -15,7 +15,7 @@ import domain.interpreter.InterpreterImpl
 @Composable
 fun RamMachineUI() {
     val interpreter: Interpreter = InterpreterImpl()
-    var isCodeValid by remember { mutableStateOf(true) }
+    var isCodeValid by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -24,13 +24,15 @@ fun RamMachineUI() {
         MenuUI(
             onStepClick = {
                 interpreter.readCommand()
-            }
+            },
+            isEnableMenu = isCodeValid,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         CodeList {
-            interpreter.updateListingCode(it)
+            val codeState = interpreter.updateListingCode(it)
+            isCodeValid = codeState is CodeValidState.Valid
         }
 
         Spacer(modifier = Modifier.height(12.dp))

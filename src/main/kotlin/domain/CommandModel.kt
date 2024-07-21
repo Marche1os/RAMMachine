@@ -1,7 +1,7 @@
 package domain
 
 /**
- * Интерфейс, представляющий собой набор команд.
+ * Интерфейс, представляющий набор команд.
  *
  * Если требуется новый набор команд, нужно унаследовать [CommandModel] и задать валидные команды для этого набора команд
  */
@@ -15,4 +15,6 @@ interface CommandModel {
      * @return true, если команды валидны для этого набора команд. Иначе - false
      */
     fun checkCommands(code: List<String>): Boolean
+
+    fun performCommand(command: String)
 }

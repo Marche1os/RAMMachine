@@ -19,4 +19,8 @@ class RegisterToRegisterCommandModel : CommandModel {
 
         return commands.keys.containsAll(codeCommands)
     }
+
+    override fun performCommand(command: String) {
+        commands.getValue(command).perform()
+    }
 }
