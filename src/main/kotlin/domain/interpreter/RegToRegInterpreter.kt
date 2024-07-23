@@ -1,5 +1,6 @@
 package domain.interpreter
 
+import androidx.compose.ui.util.fastJoinToString
 import domain.RamMachine
 import kotlinx.coroutines.flow.update
 
@@ -68,6 +69,16 @@ class RegToRegInterpreter : Interpreter {
                 val commands = ramMachine.commands
                 commands.forEachIndexed { index, command ->
                     if (command.contains("$label:")) {
+                        val currentStateOfRegisters = ramMachine.input.toList().fastJoinToString()
+
+                        if (ramMachine.transitionStory.contains(label)) {
+                            val registerValue = ramMachine.transitionStory.getValue(label)
+                            if (registerValue == currentStateOfRegisters) {
+                                throw IllegalStateException("Программа попала в состояние deadlock и будет завершена!")
+                            }
+                        }
+
+                        ramMachine.transitionStory[label] = currentStateOfRegisters
                         ramMachine.commandPointer = index
                         return
                     }

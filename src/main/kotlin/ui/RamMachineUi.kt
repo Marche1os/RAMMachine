@@ -25,7 +25,6 @@ fun RamMachineUI() {
     ) {
         MenuUI(
             onStepClick = {
-//                interpreter.readCommand()
                 ramMachine.step()
             },
             isEnableMenu = isCodeValid,
@@ -35,9 +34,13 @@ fun RamMachineUI() {
 
         CodeList {
             ramMachine.setCode(it)
-//            val codeState = interpreter.updateListingCode(it)
-//            isCodeValid = codeState is CodeValidState.Valid
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Текущая команда: ${ramMachine.executionCommand.collectAsState().value}"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
