@@ -16,6 +16,7 @@ fun MenuUI(
     onStepClick: () -> Unit = {},
     onRunClick: () -> Unit = {},
     onStopClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
     isEnableMenu: Boolean,
 ) {
     Row(
@@ -54,6 +55,13 @@ fun MenuUI(
             enabled = isEnableMenu,
         ) {
             Text(text = "Stop")
+        }
+
+        Button(
+            onClick = onSettingsClick,
+            enabled = isEnableMenu,
+        ) {
+            Text(text = "Settings")
         }
     }
 }

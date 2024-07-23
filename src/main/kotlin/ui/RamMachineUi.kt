@@ -1,13 +1,20 @@
 package ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import domain.RamMachine
 
 val ramMachine = RamMachine()
@@ -18,6 +25,7 @@ fun RamMachineUI() {
     var text by remember { mutableStateOf("") }
     val tapeValues = ramMachine.input
     val errors = ramMachine.errors.collectAsState().value
+    var isSettingsOpen by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -37,8 +45,18 @@ fun RamMachineUI() {
             onStopClick = {
                 ramMachine.stop()
             },
+            onSettingsClick = {
+                isSettingsOpen = true
+            },
             isEnableMenu = isCodeValid,
         )
+
+        if (isSettingsOpen) {
+            SettingsUI(
+                onDismiss = { isSettingsOpen = false },
+                onConfirm = { delayMs -> ramMachine.delayMs = delayMs }
+            )
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 
