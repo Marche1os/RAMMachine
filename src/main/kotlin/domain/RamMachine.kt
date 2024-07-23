@@ -25,7 +25,7 @@ class RamMachine {
     var commands: List<String> = emptyList()
     var transitionStory = mutableMapOf<String, String>()
     var isStopped = false
-    var delayMs: Long = 10000
+    var delayMs: Long = 1_000
     var scope = CoroutineScope(Dispatchers.Default)
 
     fun setCode(code: String) {

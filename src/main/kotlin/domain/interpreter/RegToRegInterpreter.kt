@@ -27,7 +27,7 @@ class RegToRegInterpreter : Interpreter {
             val args = currentCommand.substring(4).trim()
             val argValues = args.split(",")
 
-            val value = calcValue(argValues.first(), ramMachine.input.toList())
+            val value = calcValue(argValues.first().trim(), ramMachine.input.toList())
             val address = calcIndex(argValues.last().trim(), ramMachine.input.toList())
 
             ramMachine.input[address] = value

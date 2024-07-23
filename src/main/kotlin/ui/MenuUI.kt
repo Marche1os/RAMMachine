@@ -57,6 +57,8 @@ fun MenuUI(
             Text(text = "Stop")
         }
 
+        Spacer(Modifier.width(8.dp))
+
         Button(
             onClick = onSettingsClick,
             enabled = isEnableMenu,
