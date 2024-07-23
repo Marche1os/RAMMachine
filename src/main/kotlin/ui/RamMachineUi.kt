@@ -54,7 +54,10 @@ fun RamMachineUI() {
         if (isSettingsOpen) {
             SettingsUI(
                 onDismiss = { isSettingsOpen = false },
-                onConfirm = { delayMs -> ramMachine.delayMs = delayMs }
+                onConfirm = { delayMs ->
+                    ramMachine.delayMs = delayMs
+                    isSettingsOpen = false
+                }
             )
         }
 

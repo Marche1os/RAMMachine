@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -20,6 +21,7 @@ fun SettingsUI(
     onConfirm: (delayMs: Long) -> Unit = {}
 ) {
     var inputText by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf("") }
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -31,23 +33,33 @@ fun SettingsUI(
         ) {
             OutlinedTextField(
                 value = inputText,
+                isError = error.isNotBlank(),
                 onValueChange = { inputText = it },
-                label = { Text("Введите время исполнения команды") },
-                placeholder = {
-                    Text("Можно добавить через Enter")
-                },
+                label = { Text("Время в м/с") },
                 modifier = Modifier
-                    .wrapContentSize()
+                    .fillMaxWidth()
+                    .height(100.dp)
                     .padding(16.dp),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        inputText.toLongOrNull()
-                            ?.let { onConfirm(it) }
-                    }
-                )
             )
+
+            Button(
+                onClick = {
+                    inputText.toLongOrNull()
+                        ?.let { onConfirm(it) }
+                },
+                modifier = Modifier.padding(horizontal = 16.dp),
+            ) {
+                Text("Добавить")
+            }
+
+            Button(
+                onClick = { onDismiss() },
+                modifier = Modifier.padding(horizontal = 16.dp),
+            ) {
+                Text("Отмена")
+            }
         }
     }
 }
