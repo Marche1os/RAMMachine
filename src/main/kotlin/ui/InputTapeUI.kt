@@ -1,7 +1,9 @@
 package ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -40,6 +42,9 @@ fun InputTapeUI(
                 value = inputText,
                 onValueChange = { inputText = it },
                 label = { Text("Введите число") },
+                placeholder = {
+                    Text("Можно добавить через Enter")
+                },
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(16.dp),
@@ -67,7 +72,8 @@ fun InputTapeUI(
         Text("Входная лента:", modifier = Modifier.padding(horizontal = 16.dp))
 
         Row(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.horizontalScroll(rememberScrollState())
+                .padding(16.dp),
         ) {
             tape.forEachIndexed { index, value ->
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {

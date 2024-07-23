@@ -1,9 +1,6 @@
 package ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
@@ -17,6 +14,7 @@ val ramMachine = RamMachine()
 @Composable
 fun RamMachineUI() {
     var isCodeValid by remember { mutableStateOf(true) }
+    var text by remember { mutableStateOf("") }
     val tapeValues = ramMachine.input
 
     Column(
@@ -27,18 +25,31 @@ fun RamMachineUI() {
             onStepClick = {
                 ramMachine.step()
             },
+            onNewClick = {
+                ramMachine.restart()
+            },
             isEnableMenu = isCodeValid,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        CodeList {
-            ramMachine.setCode(it)
+        Row {
+            CodeList {
+                ramMachine.setCode(it)
+            }
+
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = "Выходная лента"
+            )
+
+            OutputTapeUI(ramMachine.outputValues)
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
             text = "Текущая команда: ${ramMachine.executionCommand.collectAsState().value}"
         )
 
@@ -48,8 +59,5 @@ fun RamMachineUI() {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(text = "Выходная лента")
-
-        OutputTapeUI(ramMachine.outputValues)
     }
 }

@@ -4,10 +4,11 @@ import androidx.compose.runtime.mutableStateListOf
 import domain.interpreter.Interpreter
 import domain.interpreter.RegToRegInterpreter
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 class RamMachine {
     private var interpterer: Interpreter = RegToRegInterpreter()
-    val executionCommand: MutableStateFlow<String> = MutableStateFlow("NO EXECUTION COMMAND")
+    val executionCommand: MutableStateFlow<String> = MutableStateFlow("")
 
     var commandPointer = 0
     var inputPointer = 0
@@ -29,7 +30,14 @@ class RamMachine {
      * Очищает состояние программы, начать все заново
      */
     fun restart() {
-
+        inputPointer = 0
+        commandPointer = 0
+        commands = emptyList()
+        transitionStory = mutableMapOf()
+        input.clear()
+        input.add("0")
+        outputValues.clear()
+        executionCommand.update { "" }
     }
 
     fun step() {
