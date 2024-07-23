@@ -1,4 +1,4 @@
-package ui
+package domain.interpreter
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -36,4 +36,5 @@ fun OutputTapeUI(tape: List<String>) {
             Spacer(modifier = Modifier.width(8.dp))
         }
     }
+
 }

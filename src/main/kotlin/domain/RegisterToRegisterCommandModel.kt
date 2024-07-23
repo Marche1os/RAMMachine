@@ -2,7 +2,7 @@ package domain
 
 import domain.commands.*
 
-class RegisterToRegisterCommandModel : CommandModel {
+class RegisterToRegisterCommandModel(override var inputTape: MutableList<String>) : CommandModel {
     private val commands = mapOf(
         "READ" to ReadCommand(),
         "LOAD" to LoadCommand(),
@@ -11,6 +11,12 @@ class RegisterToRegisterCommandModel : CommandModel {
         "SUB" to SubCommand(),
         "HALT" to HaltCommand(),
     )
+
+    init {
+        commands.forEach {
+
+        }
+    }
 
     override fun checkCommands(code: List<String>): Boolean {
         val codeCommands = code.map {

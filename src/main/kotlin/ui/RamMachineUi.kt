@@ -6,16 +6,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import domain.interpreter.Interpreter
-import domain.interpreter.InterpreterImpl
+import domain.RamMachine
+
+val ramMachine = RamMachine()
 
 @Composable
 fun RamMachineUI() {
-    val interpreter: Interpreter = InterpreterImpl()
-    var isCodeValid by remember { mutableStateOf(false) }
+    var isCodeValid by remember { mutableStateOf(true) }
+    val tapeValues = ramMachine.input
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -23,7 +25,8 @@ fun RamMachineUI() {
     ) {
         MenuUI(
             onStepClick = {
-                interpreter.readCommand()
+//                interpreter.readCommand()
+                ramMachine.step()
             },
             isEnableMenu = isCodeValid,
         )
@@ -31,12 +34,19 @@ fun RamMachineUI() {
         Spacer(modifier = Modifier.height(12.dp))
 
         CodeList {
-            val codeState = interpreter.updateListingCode(it)
-            isCodeValid = codeState is CodeValidState.Valid
+            ramMachine.setCode(it)
+//            val codeState = interpreter.updateListingCode(it)
+//            isCodeValid = codeState is CodeValidState.Valid
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        InputTapeUI { println(it) }
+        InputTapeUI(tapeValues) { println(tapeValues.toList()) }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(text = "Выходная лента")
+
+        OutputTapeUI(ramMachine.outputValues)
     }
 }
