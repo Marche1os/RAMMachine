@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import domain.RamMachine
 
@@ -16,6 +17,7 @@ fun RamMachineUI() {
     var isCodeValid by remember { mutableStateOf(true) }
     var text by remember { mutableStateOf("") }
     val tapeValues = ramMachine.input
+    val errors = ramMachine.errors.collectAsState().value
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -28,6 +30,12 @@ fun RamMachineUI() {
             onNewClick = {
                 text = ""
                 ramMachine.restart()
+            },
+            onRunClick = {
+                ramMachine.run()
+            },
+            onStopClick = {
+                ramMachine.stop()
             },
             isEnableMenu = isCodeValid,
         )
@@ -53,6 +61,16 @@ fun RamMachineUI() {
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        if (errors.isNotBlank()) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = Color.Red,
+                text = "Ошибка! $errors"
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+        }
 
         InputTapeUI(tapeValues) { println(tapeValues.toList()) }
 

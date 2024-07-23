@@ -27,45 +27,43 @@ class RegToRegInterpreter : Interpreter {
             val args = currentCommand.substring(4).trim()
             val argValues = args.split(",")
 
-            val value = getValue(argValues.first(), ramMachine.input.toList())
-            val address = getAddress(argValues.last().trim(), ramMachine.input.toList())
+            val value = calcValue(argValues.first(), ramMachine.input.toList())
+            val address = calcIndex(argValues.last().trim(), ramMachine.input.toList())
 
             ramMachine.input[address] = value
         } else if (currentCommand.startsWith("ADD")) {
             val args = currentCommand.substring(3).trim()
             val argValues = args.split(",")
 
-            val value1 = getValue(argValues[0].trim(), ramMachine.input.toList()).toInt()
-            val value2 = getValue(argValues[1].trim(), ramMachine.input.toList()).toInt()
-            val address = getAddress(argValues[2].trim(), ramMachine.input.toList())
+            val value1 = calcValue(argValues[0].trim(), ramMachine.input.toList()).toInt()
+            val value2 = calcValue(argValues[1].trim(), ramMachine.input.toList()).toInt()
+            val address = calcIndex(argValues[2].trim(), ramMachine.input.toList())
 
             ramMachine.input[address] = (value1 + value2).toString()
         } else if (currentCommand.startsWith("SUB")) {
             val args = currentCommand.substring(3).trim()
             val argValues = args.split(",")
 
-            val value1 = getValue(argValues[0].trim(), ramMachine.input.toList()).toInt()
-            val value2 = getValue(argValues[1].trim(), ramMachine.input.toList()).toInt()
-            val address = getAddress(argValues[2].trim(), ramMachine.input.toList())
+            val value1 = calcValue(argValues[0].trim(), ramMachine.input.toList()).toInt()
+            val value2 = calcValue(argValues[1].trim(), ramMachine.input.toList()).toInt()
+            val address = calcIndex(argValues[2].trim(), ramMachine.input.toList())
 
             ramMachine.input[address] = (value1 - value2).toString()
         } else if (currentCommand.startsWith("CPY")) {
             val args = currentCommand.substring(3).trim()
             val argValues = args.split(",")
 
-            val address1 = getAddress(argValues.first().trim(), ramMachine.input.toList())
-            val address2 = getAddress(argValues.last().trim(), ramMachine.input.toList())
+            val address1 = calcIndex(argValues.first().trim(), ramMachine.input.toList())
+            val address2 = calcIndex(argValues.last().trim(), ramMachine.input.toList())
             ramMachine.input[address2] = ramMachine.input[address1]
         } else if (currentCommand.startsWith("JNZ")) {
             val args = currentCommand.substring(3).trim()
             val argValues = args.split(",")
 
-            println(argValues)
-
-            val value = getValue(argValues.first().trim(), ramMachine.input.toList()).toInt()
+            val labelValue = calcValue(argValues.first().trim(), ramMachine.input.toList()).toInt()
             val label = argValues.last().trim()
 
-            if (value > 0) {
+            if (labelValue > 0) {
                 val commands = ramMachine.commands
                 commands.forEachIndexed { index, command ->
                     if (command.contains("$label:")) {
@@ -84,10 +82,15 @@ class RegToRegInterpreter : Interpreter {
                     }
                 }
             }
+        } else if (currentCommand.startsWith("HALT")) {
+            ramMachine.isStopped = true
         }
     }
 
-    private fun getAddress(value: String, input: List<String>): Int {
+    /**
+     * На основе типа адресации (косвенная, прямая, нонстантная) вычисляем значение индекс ленты
+     */
+    private fun calcIndex(value: String, input: List<String>): Int {
         if (value.startsWith("[[") && value.endsWith("]]")) {
             val realValue = value.substring(2)
             val link = realValue.substring(0, realValue.length - 2).toInt()
@@ -105,7 +108,10 @@ class RegToRegInterpreter : Interpreter {
         return value.toInt()
     }
 
-    private fun getValue(value: String, input: List<String>): String {
+    /**
+     * На основе типа адресации (косвенная, прямая, нонстантная) вычисляем значение ленты
+     */
+    private fun calcValue(value: String, input: List<String>): String {
         if (value.startsWith("[[") && value.endsWith("]]")) {
             val realValue = value.substring(2)
             val link = realValue.substring(0, realValue.length - 2).toInt()
