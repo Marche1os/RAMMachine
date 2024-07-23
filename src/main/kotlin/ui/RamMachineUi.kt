@@ -26,6 +26,7 @@ fun RamMachineUI() {
                 ramMachine.step()
             },
             onNewClick = {
+                text = ""
                 ramMachine.restart()
             },
             isEnableMenu = isCodeValid,
@@ -34,14 +35,12 @@ fun RamMachineUI() {
         Spacer(modifier = Modifier.height(12.dp))
 
         Row {
-            CodeList {
-                ramMachine.setCode(it)
+            CodeList(text) {
+                text = it
+                ramMachine.setCode(text)
             }
 
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Выходная лента"
-            )
+            Spacer(modifier = Modifier.width(12.dp))
 
             OutputTapeUI(ramMachine.outputValues)
         }

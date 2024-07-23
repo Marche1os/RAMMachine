@@ -11,19 +11,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CodeList(
+    code: String,
     onTextChanged: (text: String) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
 
     OutlinedTextField(
         modifier = Modifier
             .height(180.dp)
             .padding(horizontal = 16.dp)
             .width(300.dp),
-        value = text,
+        value = code,
         onValueChange = { newText ->
-            text = newText
-            onTextChanged(text)
+            onTextChanged(newText)
         },
         label = { Text(text = "Код программы") },
     )

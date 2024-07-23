@@ -25,7 +25,6 @@ fun InputTapeUI(
     onTapeChanged: (tape: List<String>) -> Unit,
 ) {
     var inputText by remember { mutableStateOf("") }
-//    val tape = remember { mutableStateListOf("0") }
 
     val addValueAction: (input: String) -> Unit = { input ->
         if (input.toIntOrNull() != null) {
