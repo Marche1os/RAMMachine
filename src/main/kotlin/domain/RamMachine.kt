@@ -60,7 +60,6 @@ class RamMachine {
 
         val result = runCatching { interpterer.readCommand(this) }
         result.onFailure {
-            throw it
             isStopped = true
             val currentCommand = commands.getOrNull(commandPointer)
 

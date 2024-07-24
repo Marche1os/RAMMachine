@@ -7,18 +7,13 @@ import kotlinx.coroutines.flow.update
 class RegToRegInterpreter : Interpreter {
 
     override fun readCommand(ramMachine: RamMachine) {
-        println("registers: ${ramMachine.registers}")
-
         val currentCommand = ramMachine.commands[ramMachine.commandPointer++]
         ramMachine.executionCommand.update { currentCommand }
 
         if (currentCommand.startsWith("WRITE")) {
             ramMachine.writeSummatorToOutput()
         } else if (currentCommand.startsWith("READ")) {
-            println("READ")
-
             val value = ramMachine.input.getOrNull(ramMachine.inputPointer)
-//            val value = ramMachine.input[ramMachine.inputPointer].toIntOrNull()
 
             if (value == null) {
                 ramMachine.registers[0] = "-128"
@@ -26,8 +21,6 @@ class RegToRegInterpreter : Interpreter {
                 ramMachine.registers[0] = value.toString()
                 ramMachine.inputPointer++
             }
-
-//            ramMachine.inputPointer++
 
 //            ramMachine.input[0] = ramMachine.input[ramMachine.inputPointer]
         } else if (currentCommand.startsWith("LOAD")) {
@@ -48,7 +41,6 @@ class RegToRegInterpreter : Interpreter {
 
             ramMachine.registers[address] = (value1 + value2).toString()
         } else if (currentCommand.startsWith("SUB")) {
-            println("sub")
             val args = currentCommand.substring(3).trim()
             val argValues = args.split(",")
 
@@ -137,7 +129,6 @@ class RegToRegInterpreter : Interpreter {
         if (value.startsWith("[") && value.endsWith("]")) {
             val value1 = value.substring(1)
             val address = value1.substring(0, value1.length - 1).toInt()
-            println("value:$value1, address:$address")
             return registers[address].toString()
         }
 
