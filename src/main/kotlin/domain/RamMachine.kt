@@ -19,7 +19,8 @@ class RamMachine {
     var commandPointer = 0
     var inputPointer = 0
 
-    val input = mutableStateListOf("0")
+    val input = mutableStateListOf("")
+    val registers: MutableMap<Int, String> = mutableMapOf()
     val outputValues = mutableStateListOf<String>()
 
     var commands: List<String> = emptyList()
@@ -44,7 +45,6 @@ class RamMachine {
         commands = emptyList()
         transitionStory = mutableMapOf()
         input.clear()
-        input.add("0")
         outputValues.clear()
         executionCommand.update { "" }
         isStopped = false
@@ -60,8 +60,12 @@ class RamMachine {
 
         val result = runCatching { interpterer.readCommand(this) }
         result.onFailure {
+            throw it
             isStopped = true
-            val currentCommand = commands.getOrNull(inputPointer)
+            val currentCommand = commands.getOrNull(commandPointer)
+
+            println(it)
+
             errors.update {
                 "Ошибка выполнения команды: $currentCommand"
             }
@@ -88,6 +92,5 @@ class RamMachine {
         outputValues.add(getSummatorValue())
     }
 
-
-    fun getSummatorValue(): String = input.first()
+    fun getSummatorValue(): String = registers[0].toString()
 }
